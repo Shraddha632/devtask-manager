@@ -56,6 +56,14 @@ function App() {
     );
   }
 
+  
+function deleteTask(id) {
+  setTasks((currentTasks) =>
+    currentTasks.filter((task) => task.id !== id)
+  );
+}
+
+
   const completedCount = tasks.filter((task) => task.completed).length;
 
   return (
@@ -138,9 +146,22 @@ function App() {
                   </span>
                 </label>
 
-                <span className={`priority priority-${task.priority.toLowerCase()}`}>
-                  {task.priority}
-                </span>
+                
+<div className="task-actions">
+  <span className={`priority priority-${task.priority.toLowerCase()}`}>
+    {task.priority}
+  </span>
+
+  <button
+    type="button"
+    className="delete-button"
+    aria-label={`Delete ${task.title}`}
+    onClick={() => deleteTask(task.id)}
+  >
+    Delete
+  </button>
+</div>
+
               </article>
             ))
           )}
