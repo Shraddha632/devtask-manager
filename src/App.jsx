@@ -1,5 +1,5 @@
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 
 const initialTasks = [
   { id: 1, title: "Fix login page validation", priority: "High", completed: false },
@@ -12,6 +12,7 @@ function App() {
   const [title, setTitle] = useState("");
   const [priority, setPriority] = useState("Medium");
   const [filter, setFilter] = useState("All");
+  const addTaskButtonRef = useRef(null);
 
   const filteredTasks = useMemo(() => {
     if (filter === "Pending") {
@@ -61,6 +62,10 @@ function deleteTask(id) {
   setTasks((currentTasks) =>
     currentTasks.filter((task) => task.id !== id)
   );
+
+  requestAnimationFrame(() => {
+    addTaskButtonRef.current?.focus();
+  });
 }
 
 
@@ -100,7 +105,9 @@ function deleteTask(id) {
             <option>High</option>
           </select>
 
-          <button type="submit">Add task</button>
+         <button ref={addTaskButtonRef} type="submit">
+  Add task
+</button>
         </form>
       </section>
 
