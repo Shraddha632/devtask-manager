@@ -219,6 +219,14 @@ h2 {
     flex-direction: column;
   }
 
+
+
+
+  .progress-card {
+    min-width: 0;
+  }
+}
+
   
 .input-group {
   flex: 1;
@@ -233,10 +241,4 @@ h2 {
   color: #b42318;
   font-size: 13px;
   margin: 6px 0 0;
-}
-
-
-  .progress-card {
-    min-width: 0;
-  }
 }
