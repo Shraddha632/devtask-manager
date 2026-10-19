@@ -1,5 +1,5 @@
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 
 const initialTasks = [
   { id: 1, title: "Fix login page validation", priority: "High", completed: false },
@@ -12,6 +12,7 @@ function App() {
   const [title, setTitle] = useState("");
   const [priority, setPriority] = useState("Medium");
   const [filter, setFilter] = useState("All");
+  const addTaskButtonRef = useRef(null);
 
   const filteredTasks = useMemo(() => {
     if (filter === "Pending") {
@@ -56,6 +57,18 @@ function App() {
     );
   }
 
+  
+function deleteTask(id) {
+  setTasks((currentTasks) =>
+    currentTasks.filter((task) => task.id !== id)
+  );
+
+  requestAnimationFrame(() => {
+    addTaskButtonRef.current?.focus();
+  });
+}
+
+
   const completedCount = tasks.filter((task) => task.completed).length;
 
   return (
@@ -92,7 +105,9 @@ function App() {
             <option>High</option>
           </select>
 
-          <button type="submit">Add task</button>
+         <button ref={addTaskButtonRef} type="submit">
+  Add task
+</button>
         </form>
       </section>
 
@@ -138,9 +153,22 @@ function App() {
                   </span>
                 </label>
 
-                <span className={`priority priority-${task.priority.toLowerCase()}`}>
-                  {task.priority}
-                </span>
+                
+<div className="task-actions">
+  <span className={`priority priority-${task.priority.toLowerCase()}`}>
+    {task.priority}
+  </span>
+
+  <button
+    type="button"
+    className="delete-button"
+    aria-label={`Delete ${task.title}`}
+    onClick={() => deleteTask(task.id)}
+  >
+    Delete
+  </button>
+</div>
+
               </article>
             ))
           )}

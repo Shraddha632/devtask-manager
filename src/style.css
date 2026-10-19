@@ -223,3 +223,24 @@ h2 {
     min-width: 0;
   }
 }
+
+
+
+.task-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.delete-button {
+  border: 1px solid #f0c7c4;
+  border-radius: 7px;
+  background: white;
+  color: #b42318;
+  padding: 6px 10px;
+}
+
+.delete-button:hover {
+  background: #feeceb;
+}
+
