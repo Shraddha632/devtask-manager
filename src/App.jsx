@@ -12,6 +12,7 @@ function App() {
   const [title, setTitle] = useState("");
   const [priority, setPriority] = useState("Medium");
   const [filter, setFilter] = useState("All");
+  const [error, setError] = useState("");
 
   const filteredTasks = useMemo(() => {
     if (filter === "Pending") {
@@ -25,26 +26,32 @@ function App() {
     return tasks;
   }, [tasks, filter]);
 
-  function addTask(event) {
-    event.preventDefault();
 
-    if (!title.trim()) {
-      return;
-    }
+function addTask(event) {
+  event.preventDefault();
 
-    setTasks((currentTasks) => [
-      ...currentTasks,
-      {
-        id: Date.now(),
-        title: title.trim(),
-        priority,
-        completed: false,
-      },
-    ]);
+  const trimmedTitle = title.trim();
 
-    setTitle("");
-    setPriority("Medium");
+  if (!trimmedTitle) {
+    setError("Please enter a task title.");
+    return;
   }
+
+  setTasks((currentTasks) => [
+    ...currentTasks,
+    {
+      id: Date.now(),
+      title: trimmedTitle,
+      priority,
+      completed: false,
+    },
+  ]);
+
+  setTitle("");
+  setPriority("Medium");
+  setError("");
+}
+
 
   function toggleTask(id) {
     setTasks((currentTasks) =>
@@ -75,12 +82,27 @@ function App() {
       <section className="panel">
         <h2>Create a task</h2>
         <form onSubmit={addTask} className="task-form">
-          <input
-            aria-label="Task title"
-            placeholder="What needs to be done?"
-            value={title}
-            onChange={(event) => setTitle(event.target.value)}
-          />
+         
+<div className="input-group">
+  <input
+    aria-label="Task title"
+    aria-invalid={Boolean(error)}
+    aria-describedby={error ? "task-title-error" : undefined}
+    placeholder="What needs to be done?"
+    value={title}
+    onChange={(event) => {
+      setTitle(event.target.value);
+      if (error) setError("");
+    }}
+  />
+
+  {error && (
+    <p id="task-title-error" role="alert" className="error-message">
+      {error}
+    </p>
+  )}
+</div>
+
 
           <select
             aria-label="Priority"
